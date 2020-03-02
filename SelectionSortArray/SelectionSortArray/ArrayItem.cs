@@ -4,12 +4,12 @@ using System.Text;
 
 namespace SelectionSortArray
 {
-    class ListItem
+    class ArrayItem
     {
         public string fourSymbols { get; set; }
         public float number { get; set; }
 
-        public ListItem()
+        public ArrayItem()
         {
             var stringBuilder = new StringBuilder();
             var random = new Random();
@@ -21,7 +21,7 @@ namespace SelectionSortArray
             number = (float)random.NextDouble();
         }
 
-        public ListItem(string symbols, float chosenNumber)
+        public ArrayItem(string symbols, float chosenNumber)
         {
             fourSymbols = symbols;
             number = chosenNumber;
