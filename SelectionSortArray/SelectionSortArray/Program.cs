@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
-namespace SelectionSortArray
+namespace SelectionSortOperationalMemory
 {
     class Program
     {
-        private static readonly GenerateLinkedList RandomLinkedList = new GenerateLinkedList("LinkedListArray.txt");
+        private static readonly GenerateLinkedList RandomLinkedList = new GenerateLinkedList();
         private static readonly GenerateArray RandomArray = new GenerateArray();
 
         static void Main(string[] args)
         {
             int dataCount;
-            Console.WriteLine("Enter how many data you want");
+            //Console.WriteLine("Enter how many data you want");
             dataCount = 5;//Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("===============================");
-            Console.WriteLine("================UNSORTED RANDOM ARRAY===============");
-            RandomArray.GenerateRandomDataText(dataCount);
-            RandomArray.PrintDataText();
-            Console.WriteLine("================SORTED RANDOM ARRAY===============");
-            SelectionSortArray(dataCount);
-            Console.WriteLine();
-            Console.WriteLine("================UNSORTED RANDOM LINKED LIST===============");
-            RandomLinkedList.GenerateRandomDataText(dataCount);
-            RandomLinkedList.PrintDataText();
-            Console.WriteLine("================SORTED RANDOM LINKED LIST===============");
-            SelectionSortLinkedList();
+            BenchmarkArray(5);
+            BenchmarkList(5);
+            dataCount = 100;
+            BenchmarkArray(100);
+            BenchmarkList(100);
+            dataCount = 1000;
+            BenchmarkArray(1000);
+            BenchmarkList(1000);
         }
 
         private static void WriteDataToFile(string fileName, LinkedList<ListItem> listItems)
@@ -70,9 +67,6 @@ namespace SelectionSortArray
                     RandomArray.array[smallest] = temporary;
                 }
             }
-
-            RandomArray.PrintDataText();
-            Console.ReadKey();
         }
 
         private static void SelectionSortLinkedList()
@@ -110,7 +104,39 @@ namespace SelectionSortArray
 
                 currentOuter = currentOuter.Next;
             }
-            RandomLinkedList.PrintDataText();
+        }
+
+        static void BenchmarkArray(int dataCount)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            Console.WriteLine("================UNSORTED RANDOM ARRAY===============");
+            RandomArray.GenerateRandomDataText(dataCount);
+           // RandomArray.PrintDataText();
+            Console.ReadKey();
+            Console.WriteLine("================SORTED RANDOM ARRAY===============");
+            SelectionSortArray(dataCount);
+            stopWatch.Stop();
+            Console.WriteLine("==========================================");
+            Console.WriteLine($"Time it took to sort {dataCount} items: {stopWatch.Elapsed.ToString()}");
+            Console.WriteLine("");
+            Console.ReadKey();
+        }
+
+        static void BenchmarkList(int dataCount)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            Console.WriteLine("================UNSORTED RANDOM LINKED LIST===============");
+            RandomLinkedList.GenerateRandomDataText(dataCount);
+            //RandomLinkedList.PrintDataText();
+            Console.ReadKey();
+            Console.WriteLine("================SORTED RANDOM LINKED LIST===============");
+            SelectionSortLinkedList();
+            stopWatch.Stop();
+            Console.WriteLine("==========================================");
+            Console.WriteLine($"Time it took to sort {dataCount} items: {stopWatch.Elapsed.ToString()}");
+            Console.WriteLine("");
             Console.ReadKey();
         }
     }
